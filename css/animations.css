@@ -1,0 +1,195 @@
+/* ============================================
+   MindCompanion — Animations & Transitions
+   ============================================ */
+
+/* --- Page Entrance --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --- Staggered Children --- */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeInUp var(--duration-slow) var(--ease-out) forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 360ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 420ms; }
+
+/* --- Bubble Float --- */
+@keyframes bubbleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.float-anim {
+  animation: bubbleFloat 3s ease-in-out infinite;
+}
+
+.float-anim--delay-1 { animation-delay: 0.5s; }
+.float-anim--delay-2 { animation-delay: 1s; }
+.float-anim--delay-3 { animation-delay: 1.5s; }
+.float-anim--delay-4 { animation-delay: 2s; }
+
+/* --- Glow Pulse --- */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(110, 231, 183, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(110, 231, 183, 0.2);
+  }
+}
+
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* --- Ring Draw --- */
+@keyframes ringDraw {
+  from {
+    stroke-dashoffset: 377;
+  }
+}
+
+/* --- Shimmer Loading --- */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--glass-bg) 25%,
+    rgba(255, 255, 255, 0.06) 50%,
+    var(--glass-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+.skeleton--text {
+  height: 14px;
+  margin-bottom: var(--space-sm);
+  border-radius: var(--radius-full);
+}
+
+.skeleton--text:last-child {
+  width: 65%;
+}
+
+.skeleton--circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.skeleton--chart {
+  height: 160px;
+  width: 100%;
+}
+
+/* --- Wave Drawing Animation (for mood chart) --- */
+@keyframes waveDraw {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* --- Breathe Animation (for mindfulness) --- */
+@keyframes breathe {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(110, 231, 183, 0.3);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 20px rgba(110, 231, 183, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(110, 231, 183, 0);
+  }
+}
+
+.breathe-anim {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+/* --- Reduced Motion --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .stagger-children > * {
+    opacity: 1;
+    animation: none;
+  }
+}
+
+/* --- View Transition Support --- */
+.view-transition-fade {
+  view-transition-name: page-content;
+}
+
+::view-transition-old(page-content) {
+  animation: fadeIn var(--duration-normal) var(--ease-out) reverse;
+}
+
+::view-transition-new(page-content) {
+  animation: fadeInUp var(--duration-normal) var(--ease-out);
+}
