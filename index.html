@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="css/animations.css">
 
   <!-- Favicon (inline SVG) -->
+  <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
 
   <style>
@@ -264,6 +265,17 @@
           </div>
         </div>
 
+        <!-- Anxiety Wipe (Somatic Exercise) -->
+        <div class="glass-card" style="margin-bottom: var(--space-xl);" id="anxiety-wipe-container">
+          <div class="glass-card__title">🌬️ Anxiety Wipe</div>
+          <p style="font-size: var(--text-sm); margin-bottom: var(--space-md);">Type an intrusive thought. Then physically wipe it away to let it go.</p>
+          
+          <input type="text" class="text-input" id="anxiety-input" placeholder="What's bothering you?..." style="margin-bottom: var(--space-sm);">
+          <button class="btn btn--primary btn--sm" id="wipe-btn" style="width: 100%;">Prepare to Wipe</button>
+          
+          <canvas id="wipe-canvas" style="display: none; width: 100%; height: 200px; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); touch-action: none;"></canvas>
+        </div>
+
         <!-- Somatic Grounding / Desk Relief -->
         <div class="glass-card" style="margin-bottom: var(--space-xl);">
           <div class="glass-card__title">🧘 Desk Relief & Grounding</div>
@@ -295,6 +307,17 @@
                   <span id="pomodoro-time" style="font-family: monospace; font-size: 1.2rem; font-weight: bold;">25:00</span>
                   <button class="btn btn--primary btn--sm" id="pomodoro-toggle-btn">Start</button>
                 </div>
+              </div>
+            </div>
+            
+            <!-- Ambient Soundscape -->
+            <div class="grounding-tool">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <h4 style="margin: 0; font-size: var(--text-base);">Binaural Focus Audio</h4>
+                  <p style="margin: 0; font-size: var(--text-xs); color: var(--text-tertiary);">Procedural 40Hz gamma beats + pink noise.</p>
+                </div>
+                <button class="btn btn--ghost btn--sm" id="audio-toggle-btn">Play</button>
               </div>
             </div>
 
@@ -475,7 +498,18 @@
             <label class="input-group__label" for="settings-api-key">Gemini API Key</label>
             <input type="password" class="text-input" id="settings-api-key" placeholder="AIza..." autocomplete="off">
           </div>
-          <p class="api-hint">Get a free key from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>. Your key stays in your browser only — never sent to any server.</p>
+          <p class="api-hint" style="margin-bottom: var(--space-md);">Get a free key from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>. Your key stays in your browser only — never sent to any server.</p>
+          
+          <div class="input-group" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-md); border-top: 1px solid var(--glass-border);">
+            <div>
+              <label class="input-group__label" style="margin-bottom: 0;">Mira Voice Output</label>
+              <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Let Mira speak responses back to you.</div>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="voice-toggle" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
         </div>
 
         <!-- Actions -->
@@ -587,6 +621,19 @@
 
   <!-- App Script (ES Module) -->
   <script type="module" src="js/app.js"></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then(registration => {
+          console.log('SW registered: ', registration);
+        }).catch(registrationError => {
+          console.log('SW registration failed: ', registrationError);
+        });
+      });
+    }
+  </script>
 
 </body>
 </html>

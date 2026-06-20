@@ -611,7 +611,8 @@ export function renderCognitiveChart(container, entries) {
 
   const width = container.clientWidth || 400;
   const height = 140;
-  const padding = { top: 20, right: 16, bottom: 20, left: 16 };
+  // Increase right padding to leave room for forecast
+  const padding = { top: 20, right: 60, bottom: 20, left: 16 };
   const chartWidth = width - padding.left - padding.right;
   const chartHeight = height - padding.top - padding.bottom;
 
@@ -639,8 +640,47 @@ export function renderCognitiveChart(container, entries) {
     line.setAttribute('fill', 'none');
     line.setAttribute('stroke', '#fbbf24'); // Energy color
     line.setAttribute('stroke-width', '2');
-    line.setAttribute('stroke-dasharray', '4 4');
     svg.appendChild(line);
+    
+    // --- PREDICTIVE FORECAST LOGIC ---
+    // Calculate simple linear regression of last 3 points
+    if (points.length >= 2) {
+      const recentPoints = points.slice(-3);
+      let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+      const n = recentPoints.length;
+      
+      recentPoints.forEach(p => {
+        sumX += p.x;
+        sumY += p.y;
+        sumXY += p.x * p.y;
+        sumX2 += p.x * p.x;
+      });
+      
+      const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX) || 0;
+      
+      const lastPoint = points[points.length - 1];
+      const forecastX = lastPoint.x + 40; // extend right
+      const forecastY = Math.max(padding.top, Math.min(padding.top + chartHeight, lastPoint.y + slope * 40));
+      
+      const forecastLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      forecastLine.setAttribute('d', `M ${lastPoint.x} ${lastPoint.y} L ${forecastX} ${forecastY}`);
+      forecastLine.setAttribute('fill', 'none');
+      forecastLine.setAttribute('stroke', '#a78bfa'); // Purple forecast
+      forecastLine.setAttribute('stroke-width', '2');
+      forecastLine.setAttribute('stroke-dasharray', '4 4');
+      svg.appendChild(forecastLine);
+      
+      // Forecast Label
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('x', forecastX);
+      text.setAttribute('y', forecastY - 10);
+      text.setAttribute('text-anchor', 'middle');
+      text.setAttribute('fill', '#a78bfa');
+      text.setAttribute('font-size', '9');
+      text.setAttribute('font-weight', 'bold');
+      text.textContent = 'FORECAST';
+      svg.appendChild(text);
+    }
   }
 
   // Draw Points
@@ -650,8 +690,10 @@ export function renderCognitiveChart(container, entries) {
     const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     dot.setAttribute('cx', p.x);
     dot.setAttribute('cy', p.y);
-    dot.setAttribute('r', '5');
-    dot.setAttribute('fill', p.value >= 8 ? '#ef4444' : '#fbbf24');
+    dot.setAttribute('r', '4');
+    dot.setAttribute('fill', '#0a0e1a');
+    dot.setAttribute('stroke', p.value >= 8 ? '#ef4444' : '#fbbf24');
+    dot.setAttribute('stroke-width', '2');
     group.appendChild(dot);
     
     // Label

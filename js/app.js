@@ -20,6 +20,8 @@ import {
   renderHeatmap, calculateStats, renderCognitiveChart
 } from './charts.js';
 import { initChat, sendToMira } from './companion.js';
+import { toggleAudio } from './audio-engine.js';
+import { initAnxietyWipe } from './anxiety-wipe.js';
 
 /* ---- State ---- */
 let currentView = 'home';
@@ -68,6 +70,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Init somatic grounding tools
   initGrounding();
+  
+  // Init Anxiety Wipe Canvas
+  initAnxietyWipe();
+  
+  // Setup Audio Toggle
+  const audioBtn = document.getElementById('audio-toggle-btn');
+  if (audioBtn) {
+    audioBtn.addEventListener('click', () => {
+      const isPlaying = toggleAudio('focus');
+      audioBtn.textContent = isPlaying ? 'Stop' : 'Play';
+      audioBtn.classList.toggle('btn--primary', !isPlaying);
+      audioBtn.classList.toggle('btn--danger', isPlaying);
+    });
+  }
 });
 
 /* ============================================

@@ -164,6 +164,30 @@ function addMiraMessage(text) {
   container.appendChild(msg);
   chatHistory.push({ role: 'mira', text });
   scrollToBottom(container);
+  
+  speakResponse(text);
+}
+
+function speakResponse(text) {
+  const toggle = document.getElementById('voice-toggle');
+  if (toggle && !toggle.checked) return;
+  
+  if ('speechSynthesis' in window) {
+    // Strip markdown for speech
+    const cleanText = text.replace(/\*\*/g, '').replace(/[^\w\s.,?!']/g, '');
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.rate = 0.95; // slightly slower, calming
+    utterance.pitch = 1.1; // slightly higher pitch, friendly
+    
+    // Try to find a good female voice
+    const voices = window.speechSynthesis.getVoices();
+    const preferredVoice = voices.find(v => v.name.includes('Samantha') || v.name.includes('Google US English') || v.name.includes('Female'));
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+    }
+    
+    window.speechSynthesis.speak(utterance);
+  }
 }
 
 function addSystemMessage(text) {
