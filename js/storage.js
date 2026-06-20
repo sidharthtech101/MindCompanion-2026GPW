@@ -74,6 +74,13 @@ export function saveEntry(entry) {
 }
 
 /**
+ * Save a cognitive load study session
+ */
+export function saveStudySession(cognitiveLoad) {
+  return saveEntry({ text: "Logged a study session.", cognitiveLoad, analysis: { primary_emotion: "exhausted", burnout_risk_index: Math.min(10, Math.max(1, cognitiveLoad)) } });
+}
+
+/**
  * Save a quick mood log
  */
 export function saveMood(moodLevel, emoji) {
