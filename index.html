@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="description" content="MindCompanion — Your AI-powered study companion for mental wellness. Journal, track your mood, and chat with Mira for personalized support during exam season.">
-  <meta name="theme-color" content="#0a0e1a">
+  <meta name="description" content="MindCompanion — Your AI-powered study companion for mental wellness.">
+  <meta name="theme-color" content="#f5f7fa">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>MindCompanion — Student Wellness Tracker</title>
+  <title>MindCompanion — Student Wellness</title>
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/index.css">
@@ -15,161 +15,203 @@
   <link rel="stylesheet" href="css/dashboard.css">
   <link rel="stylesheet" href="css/animations.css">
 
-  <!-- Favicon (inline SVG) -->
+  <!-- Favicon -->
   <link rel="manifest" href="./manifest.json">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏃</text></svg>">
 
   <style>
-    /* Onboarding Modal */
-    #onboarding-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(10, 14, 26, 0.97);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      z-index: 9998;
-      display: none;
+    /* UI Redesign Specific Styles */
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-lg);
+      padding-top: var(--space-sm);
+    }
+    
+    .profile-avatar {
+      width: 48px;
+      height: 48px;
+      background: var(--accent-blue);
+      border-radius: 50%;
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      color: white;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
     }
-    #onboarding-modal.crisis-overlay--active {
+
+    .date-picker-row {
       display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+      scrollbar-width: none;
     }
-    .onboarding-content {
-      max-width: 400px;
-      width: 100%;
+    .date-picker-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .date-card {
+      background: var(--bg-tertiary);
+      padding: 14px 12px;
+      border-radius: 20px;
+      min-width: 65px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .date-card--active {
+      background: var(--accent-orange);
+      color: white;
+      box-shadow: 0 8px 20px rgba(255, 107, 0, 0.3);
+    }
+    .date-card .day { font-size: 0.75rem; font-weight: 600; color: var(--text-tertiary); }
+    .date-card--active .day { color: rgba(255, 255, 255, 0.9); }
+    .date-card .date { font-weight: 800; font-size: 1.25rem; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+    }
+
+    .metric-card {
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-xl);
+      padding: var(--space-lg);
+      border: none;
+      display: flex;
+      flex-direction: column;
+      box-shadow: none;
+    }
+    
+    .metric-card--orange {
+      background: var(--accent-orange);
+      color: white;
+      box-shadow: 0 8px 24px rgba(255, 107, 0, 0.25);
+    }
+    .metric-card--blue {
+      background: var(--accent-blue);
+      color: white;
+      box-shadow: 0 8px 24px rgba(0, 122, 255, 0.25);
+    }
+    .metric-card--green {
+      background: var(--accent-green);
+      color: white;
+      box-shadow: 0 8px 24px rgba(132, 204, 22, 0.25);
+    }
+
+    .metric-card__title {
+      font-size: var(--text-sm);
+      font-weight: 700;
+      margin-bottom: var(--space-sm);
+      opacity: 0.9;
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+
+    /* Small pill list for Insights */
+    .summary-pill-container {
+      display: flex;
+      justify-content: space-between;
+      background: var(--accent-orange);
+      border-radius: var(--radius-full);
+      padding: var(--space-md) var(--space-xl);
+      color: white;
+      margin-top: -20px;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 8px 24px rgba(255, 107, 0, 0.3);
+    }
+    .summary-item {
       text-align: center;
     }
-    .onboarding-content h1 {
-      font-size: 2rem;
-      margin-bottom: 8px;
+    .summary-item__label { font-size: 0.7rem; font-weight: 600; opacity: 0.9; margin-bottom: 4px; }
+    .summary-item__val { font-size: 1.1rem; font-weight: 800; }
+
+    /* Action List Items */
+    .action-list-item {
+      display: flex;
+      align-items: center;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-xl);
+      padding: var(--space-md);
+      margin-bottom: var(--space-sm);
+      box-shadow: var(--shadow-sm);
     }
-    .onboarding-content .subtitle {
-      color: var(--text-secondary);
-      margin-bottom: 32px;
+    .action-list-content {
+      flex: 1;
+    }
+    .action-list-title {
+      font-weight: 700;
       font-size: var(--text-sm);
+      margin-bottom: 2px;
     }
-    .onboarding-form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      text-align: left;
-      margin-bottom: 24px;
-    }
-    .onboarding-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .api-hint {
+    .action-list-subtitle {
       font-size: 0.7rem;
       color: var(--text-tertiary);
-      margin-top: 4px;
+      margin-bottom: 8px;
+      line-height: 1.3;
     }
-    
-    /* Theme grid */
-    .theme-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--space-sm);
-    }
-    .theme-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-xs);
-      padding: var(--space-sm);
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      transition: all var(--duration-fast) var(--ease-out);
-      color: var(--text-secondary);
-    }
-    .theme-btn:hover {
-      background: var(--glass-bg-hover);
-      border-color: var(--accent-calm-dim);
-      color: var(--text-primary);
-    }
-    .theme-btn--active {
-      background: var(--accent-calm-glow);
-      border-color: var(--accent-calm);
-      color: var(--text-primary);
-      box-shadow: var(--shadow-glow-calm);
-    }
-    .theme-emoji {
-      font-size: 1.5rem;
-    }
-    .theme-name {
-      font-size: var(--text-xs);
-      font-weight: 600;
-    }
-    /* Range Slider */
-    .range-slider {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 8px;
-      border-radius: var(--radius-full);
-      background: var(--glass-border);
-      outline: none;
-      margin: var(--space-md) 0;
-    }
-    .range-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--accent-energy);
-      cursor: pointer;
-      box-shadow: var(--shadow-md);
-      transition: transform 0.2s;
-    }
-    .range-slider::-webkit-slider-thumb:hover {
-      transform: scale(1.15);
-    }
-    
-    /* Mic Button */
-    .mic-btn {
+    .progress-bar-bg {
+      height: 4px;
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+      width: 80%;
       position: relative;
     }
-    .mic-btn--recording::after {
-      content: '';
+    .progress-bar-fill {
       position: absolute;
-      top: -2px;
-      right: -2px;
-      width: 10px;
-      height: 10px;
-      background-color: #ef4444;
-      border-radius: 50%;
-      animation: pulseRed 1.5s infinite;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background: var(--accent-orange);
+      border-radius: 4px;
+      width: 60%;
     }
-    @keyframes pulseRed {
-      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    .play-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Hide standard navs for app-like feel */
+    .top-nav { display: none; }
+    
+    .bottom-nav {
+      background: var(--bg-secondary);
+      border-top: none;
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.05);
+      border-radius: 32px 32px 0 0;
+    }
+    .main-content {
+      padding-top: var(--space-md);
+    }
+    
+    .floating-play-btn {
+      width: 40px; height: 40px; border-radius: 50%; border: none; background: rgba(0,0,0,0.1); color: white; display:flex; justify-content:center; align-items:center; cursor: pointer;
     }
   </style>
 </head>
 <body>
-
-  <!-- ============================================
-       TOP NAVIGATION
-       ============================================ -->
-  <nav class="top-nav" aria-label="Main navigation">
-    <div class="top-nav__inner">
-      <div class="top-nav__brand">
-        <span class="logo-icon">🧠</span>
-        <span class="text-gradient">MindCompanion</span>
-      </div>
-      <div class="top-nav__actions">
-        <button class="btn btn--icon btn--ghost" id="settings-nav-btn" aria-label="Settings" title="Settings">
-          ⚙️
-        </button>
-      </div>
-    </div>
-  </nav>
 
   <!-- ============================================
        MAIN CONTENT AREA
@@ -185,179 +227,120 @@
     <section id="view-home" class="view view--active">
       <div class="container dashboard stagger-children">
 
-        <!-- Greeting -->
-        <div class="greeting">
-          <h1 id="greeting-name" class="greeting__name">Good evening 👋</h1>
-          <p class="greeting__subtitle">How are you feeling today?</p>
-          <p id="greeting-time" class="greeting__time"></p>
+        <!-- Header -->
+        <div class="dashboard-header">
+          <div>
+            <h1 id="greeting-name" style="font-size: 1.5rem;">Hello, Student</h1>
+            <p style="font-size: 0.85rem; color: var(--text-tertiary); font-weight: 600;">How do you feel today?</p>
+          </div>
+          <div class="profile-avatar" id="settings-nav-btn" style="cursor: pointer;">👤</div>
         </div>
 
-        <!-- Quick Mood Selector -->
-        <div class="glass-card glass-card--compact">
-          <div class="mood-selector" role="group" aria-label="Quick mood check-in">
-            <button class="mood-btn" data-level="2" data-emoji="😊" aria-label="Feeling good">
-              😊
-              <span class="mood-btn__label">Good</span>
-            </button>
-            <button class="mood-btn" data-level="4" data-emoji="🙂" aria-label="Feeling okay">
-              🙂
-              <span class="mood-btn__label">Okay</span>
-            </button>
-            <button class="mood-btn" data-level="5" data-emoji="😐" aria-label="Feeling meh">
-              😐
-              <span class="mood-btn__label">Meh</span>
-            </button>
-            <button class="mood-btn" data-level="7" data-emoji="😟" aria-label="Feeling stressed">
-              😟
-              <span class="mood-btn__label">Stressed</span>
-            </button>
-            <button class="mood-btn" data-level="9" data-emoji="😰" aria-label="Feeling overwhelmed">
-              😰
-              <span class="mood-btn__label">Rough</span>
-            </button>
+        <!-- Date Picker (Mocked for visual match) -->
+        <div class="date-picker-row">
+          <div class="date-card">
+            <span class="day">Mon</span>
+            <span class="date">15</span>
+          </div>
+          <div class="date-card date-card--active">
+            <span class="day">Thu</span>
+            <span class="date">16</span>
+          </div>
+          <div class="date-card">
+            <span class="day">Wed</span>
+            <span class="date">17</span>
+          </div>
+          <div class="date-card">
+            <span class="day">Thr</span>
+            <span class="date">18</span>
+          </div>
+          <div class="date-card">
+            <span class="day">Fri</span>
+            <span class="date">19</span>
           </div>
         </div>
 
-        <!-- Journal Entry -->
-        <div class="glass-card" id="journal-section">
-          <div class="glass-card__title">
-            <span class="icon">📓</span> Journal Entry
-          </div>
-
-          <div class="disclaimer">
-            <span class="disclaimer__icon">ℹ️</span>
-            <span>Mira is your study companion, not a therapist. For professional support, reach out to a counselor.</span>
-          </div>
-
-          <textarea 
-            class="textarea" 
-            id="journal-textarea" 
-            placeholder="Write freely — how's your day going? What's on your mind? No filters needed..."
-            aria-label="Journal entry"
-            maxlength="3000"
-          ></textarea>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-bottom: var(--space-xl);">
-              <span id="journal-char-count" style="font-size: var(--text-xs); color: var(--text-tertiary);">0 chars</span>
-              <div style="display: flex; gap: var(--space-sm);">
-                <button class="btn btn--ghost btn--sm mic-btn" id="audio-dump-btn" aria-label="Audio Brain Dump">🎙️</button>
-                <button class="btn btn--ghost btn--sm" id="journal-talk-btn">💬 Talk to Mira</button>
-                <button class="btn btn--primary btn--sm" id="journal-submit-btn">Analyze & Save</button>
+        <!-- Metric Grid -->
+        <div class="metric-grid">
+          <!-- Burnout Index (Replaces Walk) -->
+          <div class="metric-card metric-card--orange">
+            <div class="metric-card__title">Burnout Level</div>
+            <div style="flex: 1; display: flex; align-items: center; justify-content: center; position: relative;">
+              <svg width="100" height="100" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="8"></circle>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#ffffff" stroke-width="8" stroke-dasharray="251" stroke-dashoffset="150" stroke-linecap="round" transform="rotate(-90 50 50)"></circle>
+              </svg>
+              <div style="position: absolute; text-align: center;">
+                <div style="font-weight: 800; font-size: 1.2rem;">4/10</div>
+                <div style="font-size: 0.6rem; opacity: 0.9;">Score</div>
               </div>
             </div>
           </div>
-          
-          <div id="analysis-result" style="display: none;"></div>
-        </div>
 
-        <!-- Cognitive Load Tracking -->
-        <div class="glass-card" style="margin-bottom: var(--space-xl);">
-          <div class="glass-card__title">🧠 Post-Study Cognitive Load</div>
-          <p style="font-size: var(--text-sm); margin-bottom: var(--space-md);">How does your brain feel after that module?</p>
-          
-          <div style="display: flex; justify-content: space-between; color: var(--text-secondary); font-size: var(--text-sm); font-weight: 600;">
-            <span>🌱 Fresh</span>
-            <span>Fried 🍳</span>
-          </div>
-          <input type="range" id="cognitive-slider" class="range-slider" min="1" max="10" value="5">
-          <div style="text-align: right; margin-top: var(--space-sm);">
-            <button class="btn btn--ghost btn--sm" id="log-cognitive-btn">Log Study Session</button>
-          </div>
-        </div>
-
-        <!-- Anxiety Wipe (Somatic Exercise) -->
-        <div class="glass-card" style="margin-bottom: var(--space-xl);" id="anxiety-wipe-container">
-          <div class="glass-card__title">🌬️ Anxiety Wipe</div>
-          <p style="font-size: var(--text-sm); margin-bottom: var(--space-md);">Type an intrusive thought. Then physically wipe it away to let it go.</p>
-          
-          <input type="text" class="text-input" id="anxiety-input" placeholder="What's bothering you?..." style="margin-bottom: var(--space-sm);">
-          <button class="btn btn--primary btn--sm" id="wipe-btn" style="width: 100%;">Prepare to Wipe</button>
-          
-          <canvas id="wipe-canvas" style="display: none; width: 100%; height: 200px; border-radius: var(--radius-md); background: rgba(0,0,0,0.2); touch-action: none;"></canvas>
-        </div>
-
-        <!-- Somatic Grounding / Desk Relief -->
-        <div class="glass-card" style="margin-bottom: var(--space-xl);">
-          <div class="glass-card__title">🧘 Desk Relief & Grounding</div>
-          
-          <div style="display: grid; grid-template-columns: 1fr; gap: var(--space-md); margin-bottom: var(--space-md);">
-            <!-- Haptic Pacing -->
-            <div class="grounding-tool">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                  <h4 style="margin: 0; font-size: var(--text-base);">Pre-Exam Pacing</h4>
-                  <p style="margin: 0; font-size: var(--text-xs); color: var(--text-tertiary);">Haptic 4-7-8 breathing to calm nerves.</p>
-                </div>
-                <button class="btn btn--primary btn--sm" id="haptic-start-btn">Start</button>
-              </div>
-              <div id="haptic-visualizer" class="haptic-visualizer" style="display: none;">
-                <div class="haptic-circle"></div>
-                <div class="haptic-instruction" id="haptic-instruction">Inhale...</div>
-              </div>
+          <!-- Study Sessions (Replaces Water) -->
+          <div class="metric-card metric-card--blue" style="position: relative; overflow: hidden;">
+            <div class="metric-card__title">Study Load</div>
+            <div style="flex: 1; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 10px;">
+              <!-- Illustration: A stack of books or similar -->
+              <div style="font-size: 3.5rem; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));">📚</div>
             </div>
-
-            <!-- Wellness Pomodoro -->
-            <div class="grounding-tool">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                  <h4 style="margin: 0; font-size: var(--text-base);">Wellness Timer</h4>
-                  <p style="margin: 0; font-size: var(--text-xs); color: var(--text-tertiary);">25m focus with mandatory somatic resets.</p>
-                </div>
-                <div style="display: flex; align-items: center; gap: var(--space-sm);">
-                  <span id="pomodoro-time" style="font-family: monospace; font-size: 1.2rem; font-weight: bold;">25:00</span>
-                  <button class="btn btn--primary btn--sm" id="pomodoro-toggle-btn">Start</button>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Ambient Soundscape -->
-            <div class="grounding-tool">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                  <h4 style="margin: 0; font-size: var(--text-base);">Binaural Focus Audio</h4>
-                  <p style="margin: 0; font-size: var(--text-xs); color: var(--text-tertiary);">Procedural 40Hz gamma beats + pink noise.</p>
-                </div>
-                <button class="btn btn--ghost btn--sm" id="audio-toggle-btn">Play</button>
-              </div>
-            </div>
-
-            <!-- Bilateral Focus -->
-            <div class="grounding-tool">
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                  <h4 style="margin: 0; font-size: var(--text-base);">Bilateral Visuals</h4>
-                  <p style="margin: 0; font-size: var(--text-xs); color: var(--text-tertiary);">Subtle visual rhythm to ground focus.</p>
-                </div>
-                <label class="toggle-switch">
-                  <input type="checkbox" id="bilateral-toggle">
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
+            <!-- Slider overlay for interaction -->
+            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.1); padding: 8px;">
+               <input type="range" id="cognitive-slider" class="range-slider" min="1" max="10" value="5" style="margin: 0; height: 4px;">
+               <div style="font-size: 0.6rem; text-align: center; margin-top: 4px; font-weight: 700;">Slide to Log</div>
             </div>
           </div>
         </div>
 
-        <!-- Chat with Mira -->
-        <div class="glass-card" id="chat-section">
-          <div class="glass-card__title">
-            <span class="icon">💬</span> Chat with Mira
+        <div class="metric-grid">
+          <!-- Heart Rate -> Anxiety Wipe -->
+          <div class="metric-card" style="padding: 16px;">
+            <div style="color: var(--text-tertiary); font-size: 0.75rem; font-weight: 700; margin-bottom: 8px;">Anxiety Wipe</div>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="font-size: 1.5rem;">🌬️</div>
+              <button class="btn btn--sm" id="wipe-btn" style="background: var(--bg-secondary); box-shadow: var(--shadow-sm); color: var(--text-primary);">Wipe</button>
+            </div>
           </div>
 
-          <div class="chat-container" id="chat-messages" role="log" aria-label="Chat with Mira" aria-live="polite">
-            <!-- Messages injected dynamically -->
+          <!-- Sleep -> Audio Focus -->
+          <div class="metric-card" style="padding: 16px;">
+            <div style="color: var(--text-tertiary); font-size: 0.75rem; font-weight: 700; margin-bottom: 8px;">Audio Focus</div>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="font-size: 1.3rem; font-weight: 800;">40<span style="font-size:0.7rem;">Hz</span></div>
+              <button class="btn btn--sm" id="audio-toggle-btn" style="background: var(--bg-secondary); box-shadow: var(--shadow-sm); color: var(--text-primary);">Play</button>
+            </div>
           </div>
+        </div>
+        
+        <div class="metric-grid">
+           <!-- Small pill cards matching the grey/green pills in reference -->
+           <div class="metric-card" style="padding: 12px; display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+              <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary);">Journal</span>
+              <span style="font-size: 0.8rem; font-weight: 800;">Quick</span>
+           </div>
+           
+           <div class="metric-card metric-card--green" style="padding: 12px; display: flex; flex-direction: row; align-items: center; justify-content: space-between; box-shadow: none;">
+              <span style="font-size: 0.75rem; font-weight: 600;">Grounding</span>
+              <span style="font-size: 0.8rem; font-weight: 800;">Start</span>
+           </div>
+        </div>
 
-          <div class="chat-input-bar">
-            <textarea 
-              class="textarea" 
-              id="chat-input" 
-              placeholder="Tell Mira what's on your mind..."
-              aria-label="Message to Mira"
-              rows="1"
-            ></textarea>
-            <button class="btn btn--primary btn--icon" id="chat-send-btn" aria-label="Send message">
-              ➤
-            </button>
+        <!-- Anxiety Wipe Canvas (Hidden by default) -->
+        <div class="glass-card" id="anxiety-wipe-container" style="display: none; margin-top: var(--space-md);">
+          <input type="text" class="text-input" id="anxiety-input" placeholder="What's bothering you?..." style="margin-bottom: var(--space-sm); background: var(--bg-secondary);">
+          <canvas id="wipe-canvas" style="width: 100%; height: 200px; border-radius: var(--radius-md); background: var(--bg-tertiary); touch-action: none;"></canvas>
+        </div>
+
+        <!-- Chat / Journal Area -->
+        <div class="glass-card" id="chat-section" style="margin-top: var(--space-md); margin-bottom: var(--space-xl);">
+          <div style="font-weight: 800; font-size: 1.1rem; margin-bottom: var(--space-md);">Journal & Chat</div>
+          <div class="chat-container" id="chat-messages" style="background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: 16px; min-height: 150px; margin-bottom: 12px;">
+            <!-- Messages -->
+            <div style="text-align: center; color: var(--text-tertiary); font-size: 0.8rem; margin-top: 40px;">Say hello to Mira...</div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <textarea class="text-input" id="journal-textarea" placeholder="How was your day?" style="flex: 1; border-radius: 24px; min-height: 48px; padding-top: 14px; background: var(--bg-tertiary);"></textarea>
+            <button class="play-btn" id="journal-submit-btn" style="background: var(--accent-blue);">➤</button>
           </div>
         </div>
 
@@ -368,75 +351,75 @@
     <section id="view-insights" class="view">
       <div class="container dashboard stagger-children">
 
-        <h2 style="margin-bottom: var(--space-sm);">📊 Your Insights</h2>
-        <p style="margin-bottom: var(--space-lg); font-size: var(--text-sm);">Patterns from your journal — building self-awareness, one entry at a time.</p>
-
-        <!-- Period Toggle -->
-        <div class="period-toggle" style="margin-bottom: var(--space-lg);">
-          <button class="period-toggle__btn period-toggle__btn--active" data-period="7">7 Days</button>
-          <button class="period-toggle__btn" data-period="14">14 Days</button>
-          <button class="period-toggle__btn" data-period="30">30 Days</button>
+        <!-- Top Header matches reference left screen top -->
+        <div style="display: flex; justify-content: space-between; margin-bottom: var(--space-lg); padding-top: var(--space-sm);">
+           <div>
+             <div style="font-size: 0.75rem; color: var(--text-tertiary); font-weight: 700; text-transform: uppercase;">Entries</div>
+             <div style="font-size: 1.5rem; font-weight: 900;" id="stat-total-entries">32</div>
+           </div>
+           <div style="text-align: right;">
+             <div style="font-size: 0.75rem; color: var(--text-tertiary); font-weight: 700; text-transform: uppercase;">Streak</div>
+             <div style="font-size: 1.5rem; font-weight: 900;" id="stat-streak">5<span style="font-size: 0.9rem;">d</span></div>
+           </div>
         </div>
 
-        <!-- Stats Row -->
-        <div class="stats-row" style="margin-bottom: var(--space-lg);">
-          <div class="glass-card glass-card--compact stat-card">
-            <div class="stat-card__value" id="stat-total-entries" style="color: var(--accent-calm);">0</div>
-            <div class="stat-card__label">Entries</div>
-          </div>
-          <div class="glass-card glass-card--compact stat-card">
-            <div class="stat-card__value" id="stat-avg-burnout" style="color: var(--accent-energy);">—</div>
-            <div class="stat-card__label">Avg Burnout</div>
-          </div>
-          <div class="glass-card glass-card--compact stat-card">
-            <div class="stat-card__value" id="stat-streak" style="color: var(--accent-neutral);">0d</div>
-            <div class="stat-card__label">Streak</div>
-          </div>
+        <!-- Curved Line Chart Area -->
+        <div style="position: relative; height: 220px; width: 100%; margin-bottom: 30px;">
+           <div id="mood-wave-chart" style="width: 100%; height: 100%;"></div>
         </div>
 
-        <!-- Mood Wave Chart -->
-        <div class="glass-card mood-wave-card">
-          <div class="glass-card__title">
-            <span class="icon">🌊</span> Mood Wave
-          </div>
-          <div id="mood-wave-chart" style="position: relative;"></div>
+        <!-- Summary Pill -->
+        <div class="summary-pill-container">
+           <div class="summary-item">
+             <div class="summary-item__label">Focus</div>
+             <div class="summary-item__val">40.5 h</div>
+           </div>
+           <div class="summary-item">
+             <div class="summary-item__label">Breaks</div>
+             <div class="summary-item__val">18</div>
+           </div>
+           <div class="summary-item">
+             <div class="summary-item__label">Avg Mood</div>
+             <div class="summary-item__val">Good</div>
+           </div>
         </div>
 
-        <!-- Burnout Meter -->
-        <div class="glass-card" style="margin-bottom: var(--space-lg);">
-          <div class="glass-card__title">
-            <span class="icon">🔥</span> Burnout Meter
-          </div>
-          <div id="burnout-meter" class="burnout-meter"></div>
-        </div>
+        <!-- Action Lists (Recent Entries) -->
+        <div style="margin-top: var(--space-xl); margin-bottom: var(--space-xl);">
+           
+           <div class="action-list-item">
+             <div class="action-list-content">
+               <div class="action-list-title">Late night study session</div>
+               <div class="action-list-subtitle">Felt anxious about the upcoming exam...</div>
+               <div style="display: flex; align-items: center; gap: 8px;">
+                 <div class="progress-bar-bg"><div class="progress-bar-fill" style="background: var(--accent-orange); width: 80%;"></div></div>
+                 <span style="font-size: 0.65rem; font-weight: 800;">8/10 Burnout</span>
+               </div>
+             </div>
+             <button class="play-btn">▶</button>
+           </div>
 
-        <!-- Diminishing Returns Chart -->
-        <div class="glass-card" style="margin-bottom: var(--space-lg);">
-          <div class="glass-card__title">📉 Cognitive Fatigue</div>
-          <p style="font-size: var(--text-xs); color: var(--text-tertiary); margin-bottom: var(--space-md);">Post-study "Fried" index mapped over time.</p>
-          <div id="cognitive-chart" style="height: 140px; position: relative;"></div>
-        </div>
+           <div class="action-list-item">
+             <div class="action-list-content">
+               <div class="action-list-title">Morning walk</div>
+               <div class="action-list-subtitle">Feeling much better after taking a break...</div>
+               <div style="display: flex; align-items: center; gap: 8px;">
+                 <div class="progress-bar-bg"><div class="progress-bar-fill" style="background: var(--accent-green); width: 30%;"></div></div>
+                 <span style="font-size: 0.65rem; font-weight: 800;">3/10 Burnout</span>
+               </div>
+             </div>
+             <button class="play-btn">▶</button>
+           </div>
 
-        <!-- Trigger Bubbles -->
-        <div class="glass-card">
-          <div class="glass-card__title">
-            <span class="icon">🔍</span> Hidden Triggers
-          </div>
-          <div id="trigger-bubbles" class="trigger-bubbles"></div>
         </div>
-
-        <!-- 30-Day Heatmap -->
-        <div class="glass-card">
-          <div class="glass-card__title">
-            <span class="icon">📅</span> 30-Day Mood Map
-          </div>
-          <div id="heatmap" class="heatmap"></div>
-        </div>
-
-        <!-- Recent Entries -->
-        <div class="insights-section">
-          <h3 style="margin-bottom: var(--space-md);">📝 Recent Entries</h3>
-          <div id="recent-entries" class="journal-history"></div>
+        
+        <!-- Keep hidden containers for compatibility with existing JS -->
+        <div style="display:none;">
+           <div id="burnout-meter"></div>
+           <div id="cognitive-chart"></div>
+           <div id="trigger-bubbles"></div>
+           <div id="heatmap"></div>
+           <div id="recent-entries"></div>
         </div>
 
       </div>
@@ -444,104 +427,25 @@
 
     <!-- ====== SETTINGS VIEW ====== -->
     <section id="view-settings" class="view">
-      <div class="container stagger-children" style="padding-top: var(--space-md);">
-
-        <h2 style="margin-bottom: var(--space-lg);">⚙️ Settings</h2>
-
-        <!-- Profile -->
-        <div class="glass-card settings-group">
-          <div class="settings-group__title">👤 Profile</div>
-          <div class="input-group" style="margin-bottom: var(--space-md);">
-            <label class="input-group__label" for="settings-name">Your Name</label>
-            <input type="text" class="text-input" id="settings-name" placeholder="What should Mira call you?" autocomplete="name">
-          </div>
-        </div>
-
-        <!-- Appearance (Theme) -->
-        <div class="glass-card settings-group">
-          <div class="settings-group__title">🎨 Appearance</div>
-          <div class="input-group">
-            <label class="input-group__label">App Theme</label>
-            <div class="theme-grid">
-              <button class="theme-btn theme-btn--active" data-theme-val="midnight" aria-label="Midnight">
-                <span class="theme-emoji">🌙</span>
-                <span class="theme-name">Midnight</span>
-              </button>
-              <button class="theme-btn" data-theme-val="daylight" aria-label="Daylight">
-                <span class="theme-emoji">☀️</span>
-                <span class="theme-name">Daylight</span>
-              </button>
-              <button class="theme-btn" data-theme-val="sakura" aria-label="Sakura">
-                <span class="theme-emoji">🌸</span>
-                <span class="theme-name">Sakura</span>
-              </button>
-              <button class="theme-btn" data-theme-val="ocean" aria-label="Ocean">
-                <span class="theme-emoji">🌊</span>
-                <span class="theme-name">Ocean</span>
-              </button>
-              <button class="theme-btn" data-theme-val="forest" aria-label="Forest">
-                <span class="theme-emoji">🌲</span>
-                <span class="theme-name">Forest</span>
-              </button>
-              <button class="theme-btn" data-theme-val="aurora" aria-label="Aurora">
-                <span class="theme-emoji">🌌</span>
-                <span class="theme-name">Aurora</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
+      <div class="container stagger-children" style="padding-top: var(--space-md); padding-bottom: 100px;">
+        <h2 style="margin-bottom: var(--space-lg);">Settings</h2>
+        
         <!-- AI Configuration -->
-        <div class="glass-card settings-group">
-          <div class="settings-group__title">🤖 AI Configuration</div>
-          <div class="input-group" style="margin-bottom: var(--space-sm);">
-            <label class="input-group__label" for="settings-api-key">Gemini API Key</label>
-            <input type="password" class="text-input" id="settings-api-key" placeholder="AIza..." autocomplete="off">
+        <div class="glass-card" style="margin-bottom: var(--space-md);">
+          <div style="font-weight: 700; margin-bottom: 16px;">AI Configuration</div>
+          <div class="input-group" style="margin-bottom: 12px;">
+            <label class="input-group__label" style="font-size: 0.75rem;">Gemini API Key</label>
+            <input type="password" class="text-input" id="settings-api-key" placeholder="AIza..." style="background: var(--bg-tertiary);">
           </div>
-          <p class="api-hint" style="margin-bottom: var(--space-md);">Get a free key from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>. Your key stays in your browser only — never sent to any server.</p>
-          
-          <div class="input-group" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-md); border-top: 1px solid var(--glass-border);">
-            <div>
-              <label class="input-group__label" style="margin-bottom: 0;">Mira Voice Output</label>
-              <div style="font-size: var(--text-xs); color: var(--text-tertiary);">Let Mira speak responses back to you.</div>
-            </div>
-            <label class="toggle-switch">
-              <input type="checkbox" id="voice-toggle" checked>
-              <span class="toggle-slider"></span>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--bg-tertiary);">
+            <div style="font-size: 0.85rem; font-weight: 700;">Voice Output</div>
+            <label class="toggle-switch" style="background: var(--bg-tertiary); border-radius: 20px; padding: 4px;">
+              <input type="checkbox" id="voice-toggle" checked style="opacity: 1; width: auto; height: auto;">
             </label>
           </div>
         </div>
-
-        <!-- Actions -->
-        <div class="glass-card settings-group">
-          <div class="settings-group__title">📦 Data</div>
-          <div style="display: flex; flex-direction: column; gap: var(--space-sm);">
-            <button class="btn btn--ghost" id="settings-export-btn">📤 Export All Data (JSON)</button>
-            <button class="btn btn--danger" id="settings-delete-btn">🗑️ Delete All Data</button>
-          </div>
-        </div>
-
-        <!-- Save -->
-        <button class="btn btn--primary btn--lg" id="settings-save-btn" style="width: 100%; margin-top: var(--space-md);">
-          Save Settings
-        </button>
-
-        <!-- About -->
-        <div class="glass-card" style="margin-top: var(--space-lg);">
-          <div class="glass-card__title">
-            <span class="icon">ℹ️</span> About
-          </div>
-          <p style="font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7;">
-            <strong>MindCompanion</strong> is an AI-powered study companion designed for students facing academic pressure. 
-            It uses Google's Gemini AI to analyze journal entries and provide personalized emotional support through Mira, 
-            a warm and authentic digital companion.
-          </p>
-          <p style="font-size: var(--text-xs); color: var(--text-tertiary); margin-top: var(--space-md); line-height: 1.6;">
-            ⚠️ <strong>Disclaimer:</strong> MindCompanion is NOT a medical or diagnostic tool. It does not replace professional 
-            mental health services. If you are experiencing a mental health crisis, please contact a qualified professional 
-            or call a helpline immediately.
-          </p>
-        </div>
+        
+        <button class="btn" id="settings-save-btn" style="width: 100%; background: var(--accent-blue); color: white; border-radius: 24px; padding: 16px; font-size: 1.1rem;">Save Settings</button>
 
       </div>
     </section>
@@ -554,70 +458,16 @@
   <nav class="bottom-nav" aria-label="Tab navigation">
     <div class="bottom-nav__inner">
       <button class="bottom-nav__tab bottom-nav__tab--active" data-view="home" aria-label="Home">
-        <span class="tab-icon">🏠</span>
-        Home
+        <span class="tab-icon" style="font-size: 1.5rem; filter: grayscale(1) opacity(0.5);">🏠</span>
       </button>
       <button class="bottom-nav__tab" data-view="insights" aria-label="Insights">
-        <span class="tab-icon">📊</span>
-        Insights
+        <span class="tab-icon" style="font-size: 1.5rem; filter: grayscale(1) opacity(0.5);">📊</span>
       </button>
       <button class="bottom-nav__tab" data-view="settings" aria-label="Settings">
-        <span class="tab-icon">⚙️</span>
-        Settings
+        <span class="tab-icon" style="font-size: 1.5rem; filter: grayscale(1) opacity(0.5);">⚙️</span>
       </button>
     </div>
   </nav>
-
-  <!-- ============================================
-       ONBOARDING MODAL
-       ============================================ -->
-  <div id="onboarding-modal">
-    <div class="onboarding-content">
-      <div style="font-size: 3rem; margin-bottom: 16px;">🧠</div>
-      <h1 class="text-gradient">MindCompanion</h1>
-      <p class="subtitle">Your AI-powered study companion for mental wellness</p>
-
-      <div class="onboarding-form">
-        <div class="input-group">
-          <label class="input-group__label" for="onboarding-name">What should Mira call you?</label>
-          <input type="text" class="text-input" id="onboarding-name" placeholder="Your first name" autocomplete="given-name">
-        </div>
-
-        <div class="input-group">
-          <label class="input-group__label" for="onboarding-api-key">Gemini API Key <span style="color: var(--text-tertiary);">(optional)</span></label>
-          <input type="password" class="text-input" id="onboarding-api-key" placeholder="AIza... (for live AI responses)" autocomplete="off">
-          <p class="api-hint">Free from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>. Skip this to use built-in demo responses.</p>
-        </div>
-      </div>
-
-      <div class="onboarding-actions">
-        <button class="btn btn--primary btn--lg" id="onboarding-start-btn" style="width: 100%;">
-          ✨ Get Started
-        </button>
-        <button class="btn btn--ghost" id="onboarding-demo-btn" style="width: 100%;">
-          🎮 Try Demo Mode (with sample data)
-        </button>
-        <button class="btn btn--ghost btn--sm" id="onboarding-skip-btn" style="width: 100%; margin-top: 4px;">
-          Skip for now
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============================================
-       SOMATIC RESET OVERLAY
-       ============================================ -->
-  <div id="somatic-reset-overlay" class="overlay-fullscreen">
-    <div class="somatic-reset-content">
-      <h2>Somatic Reset</h2>
-      <p style="font-size: 1.2rem; margin: var(--space-lg) 0;">Drop your shoulders.</p>
-      <p style="font-size: 1.2rem; margin: var(--space-lg) 0;">Unclench your jaw.</p>
-      <p style="font-size: 1.2rem; margin: var(--space-lg) 0;">Focus your eyes 20 feet away.</p>
-      <div class="somatic-countdown" id="somatic-countdown">30</div>
-      <p style="font-size: var(--text-sm); color: var(--text-tertiary); margin-top: var(--space-lg);">Take this time to physically release tension.</p>
-      <button class="btn btn--primary" id="somatic-dismiss-btn" style="margin-top: var(--space-xl); display: none;">Resume</button>
-    </div>
-  </div>
 
   <!-- App Script (ES Module) -->
   <script type="module" src="js/app.js"></script>
@@ -626,11 +476,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').then(registration => {
-          console.log('SW registered: ', registration);
-        }).catch(registrationError => {
-          console.log('SW registration failed: ', registrationError);
-        });
+        navigator.serviceWorker.register('./sw.js').catch(e => console.log(e));
       });
     }
   </script>

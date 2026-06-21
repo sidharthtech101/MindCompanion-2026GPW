@@ -3,38 +3,22 @@
    Glass cards, buttons, inputs, modals, nav
    ============================================ */
 
-/* --- Glass Card --- */
+/* --- Solid Card (Replaces Glass Card) --- */
 .glass-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-lg);
+  border-radius: var(--radius-xl); /* Very round */
+  padding: var(--space-xl);
   transition: all var(--duration-normal) var(--ease-out);
   position: relative;
   overflow: hidden;
-}
-
-.glass-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.08) 50%,
-    transparent 100%
-  );
+  box-shadow: var(--shadow-sm);
 }
 
 .glass-card:hover {
   background: var(--glass-bg-hover);
-  border-color: var(--glass-border-hover);
   box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .glass-card--compact {
@@ -42,8 +26,7 @@
 }
 
 .glass-card--flat {
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  box-shadow: none;
 }
 
 .glass-card__title {
@@ -98,16 +81,14 @@
 }
 
 .btn--ghost {
-  background: var(--glass-bg);
+  background: var(--bg-secondary);
   color: var(--text-primary);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 .btn--ghost:hover {
-  background: var(--glass-bg-hover);
-  border-color: var(--glass-border-hover);
+  background: var(--bg-tertiary);
+  border-color: var(--glass-border);
 }
 
 .btn--danger {
@@ -281,10 +262,9 @@
   left: 0;
   right: 0;
   height: var(--nav-height);
-  background: rgba(10, 14, 26, 0.8);
-  backdrop-filter: blur(var(--glass-blur-heavy));
-  -webkit-backdrop-filter: blur(var(--glass-blur-heavy));
-  border-bottom: 1px solid var(--glass-border);
+  background: rgba(245, 247, 250, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   z-index: var(--z-dropdown);
   display: flex;
   align-items: center;
@@ -324,16 +304,14 @@
   left: 0;
   right: 0;
   height: var(--bottom-nav-height);
-  background: rgba(10, 14, 26, 0.85);
-  backdrop-filter: blur(var(--glass-blur-heavy));
-  -webkit-backdrop-filter: blur(var(--glass-blur-heavy));
-  border-top: 1px solid var(--glass-border);
+  background: var(--bg-elevated);
   z-index: var(--z-dropdown);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .bottom-nav__inner {
@@ -371,23 +349,21 @@
   color: var(--text-secondary);
 }
 
-.bottom-nav__tab--active {
-  color: var(--accent-calm);
-}
-
 .bottom-nav__tab--active .tab-icon {
+  filter: none !important;
   transform: scale(1.15);
+  text-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
 }
 
 .bottom-nav__tab--active::after {
   content: '';
   position: absolute;
-  top: 0;
+  top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  width: 20px;
-  height: 2px;
-  background: var(--accent-calm);
+  width: 4px;
+  height: 4px;
+  background: var(--accent-blue);
   border-radius: var(--radius-full);
 }
 
@@ -666,9 +642,7 @@ input:checked + .toggle-slider:before {
 .crisis-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 14, 26, 0.96);
-  backdrop-filter: blur(var(--glass-blur-heavy));
-  -webkit-backdrop-filter: blur(var(--glass-blur-heavy));
+  background: rgba(255, 255, 255, 0.98);
   z-index: var(--z-crisis);
   display: none;
   align-items: center;

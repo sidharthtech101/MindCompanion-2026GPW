@@ -1,10 +1,10 @@
 /* ============================================
    MindCompanion — Design System & Base Styles
-   Multi-theme support + Student-friendly UI
+   Vibrant, Clean Fitness-App Aesthetic
    ============================================ */
 
 /* --- Google Fonts --- */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* ============================================
    BILATERAL BAR
@@ -14,7 +14,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 3px;
+  height: 4px;
   background: transparent;
   z-index: 1000;
   pointer-events: none;
@@ -28,7 +28,7 @@
   height: 100%;
   background: var(--accent-calm);
   border-radius: 4px;
-  box-shadow: 0 0 10px var(--accent-calm), 0 0 20px var(--accent-calm);
+  box-shadow: 0 0 10px var(--accent-calm);
   animation: bilateral-move 2.5s ease-in-out infinite alternate;
 }
 @keyframes bilateral-move {
@@ -37,335 +37,60 @@
 }
 
 /* ============================================
-   RESPONSIVE
-   ============================================ */
-
-/* ============================================
    THEME DEFINITIONS
    ============================================ */
 
-/* --- 🌙 MIDNIGHT (Default Dark) --- */
-:root,
-[data-theme="midnight"] {
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #0f1424;
-  --bg-tertiary: #141a2e;
-  --bg-elevated: #1a2138;
-
-  --glass-bg: rgba(255, 255, 255, 0.035);
-  --glass-bg-hover: rgba(255, 255, 255, 0.06);
-  --glass-bg-active: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-border-hover: rgba(255, 255, 255, 0.14);
-
-  --accent-calm: #6ee7b7;
-  --accent-calm-glow: rgba(110, 231, 183, 0.2);
-  --accent-calm-dim: rgba(110, 231, 183, 0.6);
-  --accent-stress: #f87171;
-  --accent-stress-glow: rgba(248, 113, 113, 0.2);
-  --accent-stress-dim: rgba(248, 113, 113, 0.6);
-  --accent-neutral: #a78bfa;
-  --accent-neutral-glow: rgba(167, 139, 250, 0.2);
-  --accent-neutral-dim: rgba(167, 139, 250, 0.6);
-  --accent-energy: #fbbf24;
-  --accent-energy-glow: rgba(251, 191, 36, 0.2);
-  --accent-energy-dim: rgba(251, 191, 36, 0.6);
-  --accent-blue: #60a5fa;
-  --accent-blue-glow: rgba(96, 165, 250, 0.2);
-  --accent-pink: #f472b6;
-  --accent-pink-glow: rgba(244, 114, 182, 0.2);
-
-  --text-primary: rgba(255, 255, 255, 0.92);
-  --text-secondary: rgba(255, 255, 255, 0.55);
-  --text-tertiary: rgba(255, 255, 255, 0.35);
-  --text-accent: var(--accent-calm);
-
-  --ambient-glow-1: rgba(110, 231, 183, 0.04);
-  --ambient-glow-2: rgba(167, 139, 250, 0.03);
-  --scrollbar-thumb: rgba(255, 255, 255, 0.1);
-  --scrollbar-hover: rgba(255, 255, 255, 0.18);
-  --selection-bg: rgba(110, 231, 183, 0.25);
-  --btn-primary-text: #0a0e1a;
-  --btn-primary-bg: linear-gradient(135deg, #6ee7b7, #4ade80);
-  --gradient-brand: linear-gradient(135deg, var(--accent-calm), var(--accent-neutral));
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
-
-  --theme-emoji: 🌙;
-  --theme-name: "Midnight";
-}
-
-/* --- ☀️ DAYLIGHT (Clean Light) --- */
-[data-theme="daylight"] {
-  --bg-primary: #f5f7fa;
-  --bg-secondary: #edf0f5;
-  --bg-tertiary: #e4e8ef;
-  --bg-elevated: #ffffff;
-
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-bg-hover: rgba(255, 255, 255, 0.85);
-  --glass-bg-active: rgba(255, 255, 255, 0.95);
-  --glass-border: rgba(0, 0, 0, 0.06);
-  --glass-border-hover: rgba(0, 0, 0, 0.1);
-
-  --accent-calm: #10b981;
-  --accent-calm-glow: rgba(16, 185, 129, 0.15);
-  --accent-calm-dim: rgba(16, 185, 129, 0.7);
-  --accent-stress: #ef4444;
-  --accent-stress-glow: rgba(239, 68, 68, 0.12);
-  --accent-stress-dim: rgba(239, 68, 68, 0.7);
-  --accent-neutral: #7c3aed;
-  --accent-neutral-glow: rgba(124, 58, 237, 0.1);
-  --accent-neutral-dim: rgba(124, 58, 237, 0.7);
-  --accent-energy: #f59e0b;
-  --accent-energy-glow: rgba(245, 158, 11, 0.12);
-  --accent-energy-dim: rgba(245, 158, 11, 0.7);
-  --accent-blue: #3b82f6;
-  --accent-blue-glow: rgba(59, 130, 246, 0.1);
-  --accent-pink: #ec4899;
-  --accent-pink-glow: rgba(236, 72, 153, 0.1);
-
-  --text-primary: rgba(15, 23, 42, 0.92);
-  --text-secondary: rgba(15, 23, 42, 0.55);
-  --text-tertiary: rgba(15, 23, 42, 0.35);
-  --text-accent: var(--accent-calm);
-
-  --ambient-glow-1: rgba(16, 185, 129, 0.05);
-  --ambient-glow-2: rgba(124, 58, 237, 0.03);
-  --scrollbar-thumb: rgba(0, 0, 0, 0.1);
-  --scrollbar-hover: rgba(0, 0, 0, 0.18);
-  --selection-bg: rgba(16, 185, 129, 0.2);
-  --btn-primary-text: #ffffff;
-  --btn-primary-bg: linear-gradient(135deg, #10b981, #059669);
-  --gradient-brand: linear-gradient(135deg, #10b981, #7c3aed);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
-
-  --theme-emoji: ☀️;
-  --theme-name: "Daylight";
-}
-
-/* --- 🌸 SAKURA (Warm Pastels) --- */
-[data-theme="sakura"] {
-  --bg-primary: #fdf2f8;
-  --bg-secondary: #fce7f3;
-  --bg-tertiary: #fbcfe8;
-  --bg-elevated: #ffffff;
-
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-bg-hover: rgba(255, 255, 255, 0.8);
-  --glass-bg-active: rgba(255, 255, 255, 0.9);
-  --glass-border: rgba(236, 72, 153, 0.1);
-  --glass-border-hover: rgba(236, 72, 153, 0.18);
-
-  --accent-calm: #ec4899;
-  --accent-calm-glow: rgba(236, 72, 153, 0.15);
-  --accent-calm-dim: rgba(236, 72, 153, 0.65);
-  --accent-stress: #e11d48;
-  --accent-stress-glow: rgba(225, 29, 72, 0.12);
-  --accent-stress-dim: rgba(225, 29, 72, 0.65);
-  --accent-neutral: #a855f7;
-  --accent-neutral-glow: rgba(168, 85, 247, 0.12);
-  --accent-neutral-dim: rgba(168, 85, 247, 0.65);
-  --accent-energy: #f97316;
-  --accent-energy-glow: rgba(249, 115, 22, 0.12);
-  --accent-energy-dim: rgba(249, 115, 22, 0.65);
-  --accent-blue: #6366f1;
-  --accent-blue-glow: rgba(99, 102, 241, 0.1);
-  --accent-pink: #ec4899;
-  --accent-pink-glow: rgba(236, 72, 153, 0.15);
-
-  --text-primary: rgba(55, 6, 23, 0.9);
-  --text-secondary: rgba(55, 6, 23, 0.5);
-  --text-tertiary: rgba(55, 6, 23, 0.3);
-  --text-accent: var(--accent-calm);
-
-  --ambient-glow-1: rgba(236, 72, 153, 0.06);
-  --ambient-glow-2: rgba(168, 85, 247, 0.04);
-  --scrollbar-thumb: rgba(236, 72, 153, 0.15);
-  --scrollbar-hover: rgba(236, 72, 153, 0.25);
-  --selection-bg: rgba(236, 72, 153, 0.2);
-  --btn-primary-text: #ffffff;
-  --btn-primary-bg: linear-gradient(135deg, #ec4899, #d946ef);
-  --gradient-brand: linear-gradient(135deg, #ec4899, #a855f7);
-  --shadow-sm: 0 2px 8px rgba(236, 72, 153, 0.06);
-  --shadow-md: 0 4px 16px rgba(236, 72, 153, 0.08);
-  --shadow-lg: 0 8px 32px rgba(236, 72, 153, 0.1);
-
-  --theme-emoji: 🌸;
-  --theme-name: "Sakura";
-}
-
-/* --- 🌊 OCEAN (Cool Blue Tones) --- */
-[data-theme="ocean"] {
-  --bg-primary: #0c1929;
-  --bg-secondary: #0f2035;
-  --bg-tertiary: #132844;
-  --bg-elevated: #1a3454;
-
-  --glass-bg: rgba(96, 165, 250, 0.06);
-  --glass-bg-hover: rgba(96, 165, 250, 0.1);
-  --glass-bg-active: rgba(96, 165, 250, 0.14);
-  --glass-border: rgba(96, 165, 250, 0.1);
-  --glass-border-hover: rgba(96, 165, 250, 0.18);
-
-  --accent-calm: #38bdf8;
-  --accent-calm-glow: rgba(56, 189, 248, 0.2);
-  --accent-calm-dim: rgba(56, 189, 248, 0.6);
-  --accent-stress: #fb7185;
-  --accent-stress-glow: rgba(251, 113, 133, 0.2);
-  --accent-stress-dim: rgba(251, 113, 133, 0.6);
-  --accent-neutral: #818cf8;
-  --accent-neutral-glow: rgba(129, 140, 248, 0.2);
-  --accent-neutral-dim: rgba(129, 140, 248, 0.6);
-  --accent-energy: #fcd34d;
-  --accent-energy-glow: rgba(252, 211, 77, 0.2);
-  --accent-energy-dim: rgba(252, 211, 77, 0.6);
-  --accent-blue: #60a5fa;
-  --accent-blue-glow: rgba(96, 165, 250, 0.2);
-  --accent-pink: #f0abfc;
-  --accent-pink-glow: rgba(240, 171, 252, 0.2);
-
-  --text-primary: rgba(224, 242, 254, 0.92);
-  --text-secondary: rgba(186, 220, 247, 0.55);
-  --text-tertiary: rgba(186, 220, 247, 0.35);
-  --text-accent: var(--accent-calm);
-
-  --ambient-glow-1: rgba(56, 189, 248, 0.05);
-  --ambient-glow-2: rgba(129, 140, 248, 0.04);
-  --scrollbar-thumb: rgba(56, 189, 248, 0.12);
-  --scrollbar-hover: rgba(56, 189, 248, 0.22);
-  --selection-bg: rgba(56, 189, 248, 0.25);
-  --btn-primary-text: #0c1929;
-  --btn-primary-bg: linear-gradient(135deg, #38bdf8, #22d3ee);
-  --gradient-brand: linear-gradient(135deg, #38bdf8, #818cf8);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-
-  --theme-emoji: 🌊;
-  --theme-name: "Ocean";
-}
-
-/* --- 🌲 FOREST (Earth Tones) --- */
-[data-theme="forest"] {
-  --bg-primary: #0f1a12;
-  --bg-secondary: #142118;
-  --bg-tertiary: #1a2b1f;
-  --bg-elevated: #223528;
-
-  --glass-bg: rgba(110, 231, 183, 0.04);
-  --glass-bg-hover: rgba(110, 231, 183, 0.07);
-  --glass-bg-active: rgba(110, 231, 183, 0.1);
-  --glass-border: rgba(110, 231, 183, 0.08);
-  --glass-border-hover: rgba(110, 231, 183, 0.14);
-
-  --accent-calm: #4ade80;
-  --accent-calm-glow: rgba(74, 222, 128, 0.2);
-  --accent-calm-dim: rgba(74, 222, 128, 0.6);
-  --accent-stress: #f97316;
-  --accent-stress-glow: rgba(249, 115, 22, 0.2);
-  --accent-stress-dim: rgba(249, 115, 22, 0.6);
-  --accent-neutral: #a3e635;
-  --accent-neutral-glow: rgba(163, 230, 53, 0.2);
-  --accent-neutral-dim: rgba(163, 230, 53, 0.6);
-  --accent-energy: #facc15;
-  --accent-energy-glow: rgba(250, 204, 21, 0.2);
-  --accent-energy-dim: rgba(250, 204, 21, 0.6);
-  --accent-blue: #34d399;
-  --accent-blue-glow: rgba(52, 211, 153, 0.2);
-  --accent-pink: #fb923c;
-  --accent-pink-glow: rgba(251, 146, 60, 0.2);
-
-  --text-primary: rgba(220, 252, 231, 0.92);
-  --text-secondary: rgba(187, 247, 208, 0.55);
-  --text-tertiary: rgba(187, 247, 208, 0.35);
-  --text-accent: var(--accent-calm);
-
-  --ambient-glow-1: rgba(74, 222, 128, 0.05);
-  --ambient-glow-2: rgba(163, 230, 53, 0.03);
-  --scrollbar-thumb: rgba(74, 222, 128, 0.12);
-  --scrollbar-hover: rgba(74, 222, 128, 0.22);
-  --selection-bg: rgba(74, 222, 128, 0.25);
-  --btn-primary-text: #0f1a12;
-  --btn-primary-bg: linear-gradient(135deg, #4ade80, #22c55e);
-  --gradient-brand: linear-gradient(135deg, #4ade80, #a3e635);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.45);
-
-  --theme-emoji: 🌲;
-  --theme-name: "Forest";
-}
-
-/* --- 🌌 AURORA (Vibrant Gradient Dark) --- */
-[data-theme="aurora"] {
-  --bg-primary: #0f0720;
-  --bg-secondary: #140b2a;
-  --bg-tertiary: #1a1035;
-  --bg-elevated: #231642;
-
-  --glass-bg: rgba(167, 139, 250, 0.05);
-  --glass-bg-hover: rgba(167, 139, 250, 0.08);
-  --glass-bg-active: rgba(167, 139, 250, 0.12);
-  --glass-border: rgba(167, 139, 250, 0.1);
-  --glass-border-hover: rgba(167, 139, 250, 0.18);
-
-  --accent-calm: #c084fc;
-  --accent-calm-glow: rgba(192, 132, 252, 0.2);
-  --accent-calm-dim: rgba(192, 132, 252, 0.6);
-  --accent-stress: #fb7185;
-  --accent-stress-glow: rgba(251, 113, 133, 0.2);
-  --accent-stress-dim: rgba(251, 113, 133, 0.6);
-  --accent-neutral: #e879f9;
-  --accent-neutral-glow: rgba(232, 121, 249, 0.2);
-  --accent-neutral-dim: rgba(232, 121, 249, 0.6);
-  --accent-energy: #fbbf24;
-  --accent-energy-glow: rgba(251, 191, 36, 0.2);
-  --accent-energy-dim: rgba(251, 191, 36, 0.6);
-  --accent-blue: #818cf8;
-  --accent-blue-glow: rgba(129, 140, 248, 0.2);
-  --accent-pink: #f0abfc;
-  --accent-pink-glow: rgba(240, 171, 252, 0.2);
-
-  --text-primary: rgba(243, 232, 255, 0.92);
-  --text-secondary: rgba(216, 191, 255, 0.55);
-  --text-tertiary: rgba(216, 191, 255, 0.35);
-  --text-accent: var(--accent-calm);
-
-  --ambient-glow-1: rgba(192, 132, 252, 0.06);
-  --ambient-glow-2: rgba(232, 121, 249, 0.04);
-  --scrollbar-thumb: rgba(192, 132, 252, 0.12);
-  --scrollbar-hover: rgba(192, 132, 252, 0.22);
-  --selection-bg: rgba(192, 132, 252, 0.25);
-  --btn-primary-text: #0f0720;
-  --btn-primary-bg: linear-gradient(135deg, #c084fc, #e879f9);
-  --gradient-brand: linear-gradient(135deg, #c084fc, #f0abfc);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-
-  --theme-emoji: 🌌;
-  --theme-name: "Aurora";
-}
-
-/* ============================================
-   SHARED TOKENS (theme-agnostic)
-   ============================================ */
 :root {
+  /* Core Backgrounds */
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f3f4f6;
+  --bg-elevated: #ffffff;
+
+  /* Accent Colors (Solid, Vibrant) */
+  --accent-orange: #ff6b00;
+  --accent-blue: #007aff;
+  --accent-green: #84cc16;
+  --accent-grey: #e5e7eb;
+  --accent-dark: #111827;
+
+  /* Map to old semantic variables for compatibility, but brightened */
+  --accent-calm: var(--accent-green);
+  --accent-calm-glow: rgba(132, 204, 22, 0.2);
+  --accent-calm-dim: rgba(132, 204, 22, 0.6);
+  
+  --accent-stress: var(--accent-orange);
+  --accent-stress-glow: rgba(255, 107, 0, 0.2);
+  --accent-stress-dim: rgba(255, 107, 0, 0.6);
+  
+  --accent-neutral: var(--accent-blue);
+  --accent-neutral-glow: rgba(0, 122, 255, 0.2);
+  --accent-neutral-dim: rgba(0, 122, 255, 0.6);
+
+  /* Typography Colors */
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-tertiary: #9ca3af;
+  --text-inverse: #ffffff;
+
   /* Semantic Emotion Colors (universal) */
-  --emotion-overwhelmed: #f87171;
-  --emotion-determined: #fbbf24;
-  --emotion-anxious: #fb923c;
-  --emotion-exhausted: #94a3b8;
-  --emotion-hopeful: #6ee7b7;
+  --emotion-overwhelmed: #ff6b00; /* Orange */
+  --emotion-determined: #3b82f6; /* Blue */
+  --emotion-anxious: #f97316;
+  --emotion-exhausted: #9ca3af;
+  --emotion-hopeful: #84cc16; /* Green */
   --emotion-frustrated: #ef4444;
-  --emotion-lonely: #818cf8;
-  --emotion-calm: #34d399;
-  --emotion-defeated: #9ca3af;
-  --emotion-motivated: #a3e635;
+  --emotion-lonely: #8b5cf6;
+  --emotion-calm: #10b981;
+  --emotion-defeated: #6b7280;
+  --emotion-motivated: #007aff;
+
+  /* UI Tokens - Solid instead of Glass */
+  --glass-bg: #ffffff;
+  --glass-bg-hover: #f9fafb;
+  --glass-bg-active: #f3f4f6;
+  --glass-border: transparent;
+  --glass-border-hover: transparent;
 
   /* Spacing Scale */
   --space-xs: 4px;
@@ -376,31 +101,27 @@
   --space-2xl: 48px;
   --space-3xl: 64px;
 
-  /* Border Radius (rounder = more student-friendly) */
-  --radius-sm: 10px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 24px;
-  --radius-2xl: 28px;
+  /* Border Radius (Extremely round for fitness app look) */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-2xl: 40px;
   --radius-full: 9999px;
 
-  --shadow-glow-calm: 0 0 20px var(--accent-calm-glow);
-  --shadow-glow-stress: 0 0 20px var(--accent-stress-glow);
-  --shadow-glow-neutral: 0 0 20px var(--accent-neutral-glow);
-
-  /* Typography — Nunito is friendlier and rounder than Inter */
+  /* Typography */
   --font-sans: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   --text-xs: 0.75rem;
-  --text-sm: 0.8125rem;
-  --text-base: 0.9375rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
   --text-lg: 1.125rem;
-  --text-xl: 1.375rem;
-  --text-2xl: 1.75rem;
-  --text-3xl: 2.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.5rem;
 
-  --leading-tight: 1.25;
+  --leading-tight: 1.2;
   --leading-normal: 1.5;
   --leading-relaxed: 1.7;
 
@@ -411,21 +132,19 @@
   --duration-normal: 250ms;
   --duration-slow: 400ms;
 
-  /* Glass */
-  --glass-blur: 16px;
-  --glass-blur-heavy: 24px;
-
-  /* Z-Index Scale */
-  --z-base: 1;
-  --z-dropdown: 100;
-  --z-modal: 500;
-  --z-overlay: 900;
-  --z-crisis: 9999;
+  /* Shadows - Minimal/Flat for the new aesthetic */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.08);
 
   /* Layout */
-  --nav-height: 56px;
-  --bottom-nav-height: 68px;
+  --nav-height: 64px;
+  --bottom-nav-height: 80px;
   --max-content-width: 500px;
+  
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-hover: #94a3b8;
+  --selection-bg: rgba(0, 122, 255, 0.2);
 }
 
 /* --- Reset --- */
@@ -446,65 +165,22 @@ html {
 body {
   font-family: var(--font-sans);
   font-size: var(--text-base);
-  font-weight: 500;
+  font-weight: 600;
   line-height: var(--leading-normal);
   color: var(--text-primary);
   background: var(--bg-primary);
   min-height: 100dvh;
   overflow-x: hidden;
   position: relative;
-  /* Smooth theme transitions */
-  transition: background-color 0.5s ease, color 0.4s ease;
 }
 
-/* Ambient background glow — adapts to theme */
-body::before {
-  content: '';
-  position: fixed;
-  top: -30%;
-  left: -20%;
-  width: 70%;
-  height: 70%;
-  background: radial-gradient(
-    ellipse at center,
-    var(--ambient-glow-1) 0%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: 0;
-  animation: ambientDrift 20s ease-in-out infinite alternate;
-  transition: background 1s ease;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  bottom: -20%;
-  right: -20%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(
-    ellipse at center,
-    var(--ambient-glow-2) 0%,
-    transparent 70%
-  );
-  pointer-events: none;
-  z-index: 0;
-  animation: ambientDrift 25s ease-in-out infinite alternate-reverse;
-  transition: background 1s ease;
-}
-
-@keyframes ambientDrift {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(5%, 3%) scale(1.05); }
-  100% { transform: translate(-3%, -2%) scale(0.97); }
-}
+/* Remove ambient glow animations for the clean aesthetic */
 
 /* --- Typography Utilities --- */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
+  font-weight: 800; /* Bolder headings */
   line-height: var(--leading-tight);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 h1 { font-size: var(--text-3xl); }
@@ -515,21 +191,24 @@ h4 { font-size: var(--text-lg); }
 p {
   color: var(--text-secondary);
   line-height: var(--leading-relaxed);
+  font-weight: 500;
 }
 
 small {
   font-size: var(--text-xs);
   color: var(--text-tertiary);
+  font-weight: 500;
 }
 
 a {
-  color: var(--accent-calm);
+  color: var(--accent-blue);
   text-decoration: none;
   transition: color var(--duration-fast) var(--ease-out);
 }
 
 a:hover {
-  color: var(--accent-calm-dim);
+  color: var(--accent-blue);
+  opacity: 0.8;
 }
 
 /* --- Selection --- */
@@ -558,7 +237,7 @@ a:hover {
 
 /* --- Focus Styles (Accessibility) --- */
 :focus-visible {
-  outline: 2px solid var(--accent-calm);
+  outline: 2px solid var(--accent-blue);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
@@ -575,13 +254,6 @@ a:hover {
   border: 0;
 }
 
-.text-gradient {
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 .container {
   width: 100%;
   max-width: var(--max-content-width);
@@ -589,28 +261,4 @@ a:hover {
   padding: 0 var(--space-md);
   position: relative;
   z-index: var(--z-base);
-}
-
-/* ============================================
-   THEME TRANSITION (smooth color swap)
-   ============================================ */
-.glass-card,
-.top-nav,
-.bottom-nav,
-.btn,
-.text-input,
-.textarea,
-.mood-btn,
-.chip,
-.crisis-overlay,
-.toast,
-.period-toggle,
-.heatmap__cell,
-.chat-message,
-.disclaimer,
-.helpline-item {
-  transition: background-color 0.4s ease,
-              border-color 0.4s ease,
-              color 0.3s ease,
-              box-shadow 0.4s ease;
 }
